@@ -21,3 +21,10 @@ Interpretation choices (stated plainly so there are no surprises):
 - Only printable ASCII (0x20–0x7e) is accepted in both text and keyword; other inputs throw `RangeError`.
 
 Awkward edge: because of the padding scheme, never trust a recovered plaintext's trailing periods. If your message may end in `.`, use a different delimiter or length-prefix in a higher layer.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
